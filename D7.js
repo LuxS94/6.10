@@ -2,14 +2,10 @@
   Scrivi una funzione per concatenare due stringhe ricevute come parametri, selezionando solamente i primi 2 caratteri della
   prima e gli ultimi 3 della seconda. Converti la stringa risultante in maiuscolo e mostrala con un console.log().
 */
-let myName = "Lorenzo";
-let mySurname = "Lucca";
-let complete = function (str) {
-  let nameSurname = myName.slice(0, 2) + mySurname.slice(2, 5);
-  return nameSurname.toUpperCase();
+const complete = function (name, surname) {
+  return (name.slice(0, 2) + surname.slice(-3)).toUpperCase();
 };
-complete();
-console.log(complete());
+console.log(complete("Lorenzo", "Lucca"));
 
 /* ESERCIZIO 2 (for)
   Scrivi una funzione che torni un array di 10 elementi; ognuno di essi deve essere un valore random compreso tra 0 e 100 (incluso).
@@ -17,7 +13,7 @@ console.log(complete());
 const genera = function () {
   const array = [];
   for (let i = 0; i < 10; i++) {
-    array.push(Math.random() * 100);
+    array.push(Math.floor(Math.random() * 101));
   }
   return array;
 };
@@ -28,13 +24,11 @@ console.log(genera());
   Scrivi una funzione per ricavare solamente i valori PARI da un array composto da soli valori numerici
 */
 const numeri = [1, 2, 3, 4, 5, 6];
-const pari = numeri.filter((numeri) => {
-  for (let i = 0; i < numeri.length; i++) {
-    if (numeri[i] % 2 === 0) {
-      return true;
-    } else {
-      return false;
-    }
+const pari = numeri.filter((numero) => {
+  if (numero % 2 === 0) {
+    return true;
+  } else {
+    return false;
   }
 });
 console.log(pari);
@@ -42,13 +36,20 @@ console.log(pari);
 /* ESERCIZIO 4 (forEach)
   Scrivi una funzione per sommare i numeri contenuti in un array
 */
-const somma = numeri.forEach((numeri) => {});
-console.log(somma);
+const sommaN = () => {
+  let somma = 0;
+  numeri.forEach((numero) => (somma += numero));
+  return somma;
+};
+console.log(sommaN());
 
 /* ESERCIZIO 5 (reduce)
   Scrivi una funzione per sommare i numeri contenuti in un array
 */
-
+const sommaConReduce = (array) => {
+  return array.reduce((acc, num) => acc + num, 0);
+};
+console.log(sommaConReduce([1, 2, 3, 4, 5]));
 /* ESERCIZIO 6 (map)
   Scrivi una funzione che, dato un array di soli numeri e un numero n come parametri, ritorni un secondo array con tutti i valori del precedente incrementati di n
 */
@@ -196,10 +197,10 @@ const movies = [
 /* ESERCIZIO 9 (forEach)
   Scrivi una funzione per trovare il film più vecchio nell'array fornito.
 */
-const older = movies.forEach((movie) => {
-  return movie.Year; //????
-});
-console.log(older);
+const olderMovie = movies.reduce((oldest, movie) => {
+  return parseInt(movie.Year) < parseInt(oldest.Year) ? movie : oldest;
+}, movies[0]);
+console.log(olderMovie);
 
 /* ESERCIZIO 10
   Scrivi una funzione per ottenere il numero di film contenuti nell'array fornito.
@@ -217,23 +218,28 @@ console.log(titoli);
 /* ESERCIZIO 12 (filter)
   Scrivi una funzione per ottenere dall'array fornito solamente i film usciti nel millennio corrente.
 */
-let millennial = movies.filter((movies) => {
-  if (movies.Year.startsWith("20")) {
-    return true;
-  } else {
-    false;
-  }
-});
+let millennial = movies.filter((movie) => movie.Year.startsWith("20"));
 console.log(millennial);
 
 /* ESERCIZIO 13 (reduce)
   Scrivi una funzione per calcolare la somma di tutti gli anni in cui sono stati prodotti i film contenuti nell'array fornito.
 */
-
+const sommaAnniFilm = movies.reduce(
+  (acc, movie) => acc + parseInt(movie.Year),
+  0,
+);
+console.log(sommaAnniFilm);
 /* ESERCIZIO 14 (find)
   Scrivi una funzione per ottenere dall'array fornito uno specifico film (la funzione riceve un imdbID come parametro).
 */
-
+const findMovieByID = (id) => {
+  return movies.find((movie) => movie.imdbID === id);
+};
+console.log(findMovieByID("tt4154756"));
 /* ESERCIZIO 15 (findIndex)
   Scrivi una funzione per ottenere dall'array fornito l'indice del primo film uscito nell'anno fornito come parametro.
 */
+const findIndexByYear = (year) => {
+  return movies.findIndex((movie) => movie.Year === year);
+};
+console.log(findIndexByYear("2005"));
